@@ -2,4 +2,5 @@ projects/*
 !projects/common
 !projects/gina
 
+.svn/
 *.dep
