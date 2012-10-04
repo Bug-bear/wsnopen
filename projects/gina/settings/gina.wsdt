@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Workspace>
+  <ConfigDictionary>
+    
+    
+    
+  <CurrentConfigs><Project>00std_eui64/Release</Project><Project>00std_leds_xtal/Debug</Project><Project>00std_timers/Debug</Project><Project>00std_uart/Debug</Project><Project>01bsp_bsp_timer/Debug</Project><Project>01bsp_bsp_timer_alt/Debug</Project><Project>01bsp_leds/Debug</Project><Project>01bsp_uart/Debug</Project><Project>01bsp_bothtimers_alt/Debug</Project><Project>01bsp_bothtimers/Debug</Project><Project>01bsp_spi/Debug</Project><Project>01bsp_radio/Debug</Project><Project>01bsp_closetimers/Debug</Project><Project>01bsp_closetimers_alt/Debug</Project><Project>01bsp_debugpins/Debug</Project><Project>02drv_opentimers/Debug</Project><Project>02drv_opentimers_alt/Debug</Project><Project>03oos_openwsn/Debug</Project><Project>03oos_openwsn_alt/Debug</Project><Project>01bsp_radiotimer/Debug</Project><Project>01bsp_radiotimer_alt/Debug</Project><Project>02drv_headsup/Debug</Project></CurrentConfigs><CurrentProj>03oos_openwsn</CurrentProj><OverviewSelected>1</OverviewSelected></ConfigDictionary>
+  <Desktop>
+    <Static>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>219</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+      </Workspace>
+      <Build>
+        
+        
+        
+        
+      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>915</ColumnWidth1><ColumnWidth2>233</ColumnWidth2><ColumnWidth3>61</ColumnWidth3></Build>
+      <TerminalIO/>
+      <Debug-Log>
+        
+        
+      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1221</ColumnWidth1></Debug-Log>
+    <Find-in-Files><ColumnWidth0>491</ColumnWidth0><ColumnWidth1>62</ColumnWidth1><ColumnWidth2>754</ColumnWidth2></Find-in-Files></Static>
+    <Windows>
+      
+      
+    <Wnd0>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-14059-9871</Identity>
+            <TabName>Workspace</TabName>
+            <Factory>Workspace</Factory>
+            <Session>
+              
+            <NodeDict><ExpandedNode>&lt;ws&gt;</ExpandedNode><ExpandedNode>&lt;ws&gt;/03oos_openwsn</ExpandedNode><ExpandedNode>&lt;ws&gt;/03oos_openwsn/openwsn</ExpandedNode><ExpandedNode>&lt;ws&gt;/03oos_openwsn/openwsn/02b-MAChigh</ExpandedNode><ExpandedNode>&lt;ws&gt;/03oos_openwsn/openwsn/03a-IPHC</ExpandedNode><ExpandedNode>&lt;ws&gt;/03oos_openwsn/openwsn/03b-IPv6</ExpandedNode><ExpandedNode>&lt;ws&gt;/03oos_openwsn/openwsn/04-TRAN</ExpandedNode></NodeDict></Session>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd0><Wnd1>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-17844-10619</Identity>
+            <TabName>Build</TabName>
+            <Factory>Build</Factory>
+            <Session/>
+          </Tab>
+          <Tab>
+            <Identity>TabID-11863-10936</Identity>
+            <TabName>Debug Log</TabName>
+            <Factory>Debug-Log</Factory>
+            <Session/>
+          </Tab>
+        <Tab><Identity>TabID-9072-15997</Identity><TabName>Find in Files</TabName><Factory>Find-in-Files</Factory><Session/></Tab></Tabs>
+        
+      <SelectedTab>1</SelectedTab></Wnd1></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\openwsn\openwsn.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>656</SelStart><SelEnd>656</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\openwsn\openwsn.h</Filename><XPos>0</XPos><YPos>11</YPos><SelStart>630</SelStart><SelEnd>630</SelEnd></Tab><ActiveTab>1</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\openwsn\02a-MAClow\IEEE802154E.h</Filename><XPos>0</XPos><YPos>64</YPos><SelStart>3654</SelStart><SelEnd>3654</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\openwsn\02a-MAClow\IEEE802154E.c</Filename><XPos>0</XPos><YPos>963</YPos><SelStart>30329</SelStart><SelEnd>30329</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\openwsn\02b-MAChigh\schedule.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>589</SelStart><SelEnd>589</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\openwsn\02b-MAChigh\schedule_lists.c</Filename><XPos>0</XPos><YPos>68</YPos><SelStart>2230</SelStart><SelEnd>2230</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\openwsn\02b-MAChigh\neighbors.c</Filename><XPos>0</XPos><YPos>189</YPos><SelStart>7066</SelStart><SelEnd>7066</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\openwsn\02b-MAChigh\res.c</Filename><XPos>0</XPos><YPos>118</YPos><SelStart>4630</SelStart><SelEnd>4630</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\openwsn\02b-MAChigh\noiseprobe.h</Filename><XPos>0</XPos><YPos>15</YPos><SelStart>443</SelStart><SelEnd>443</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\openwsn\02b-MAChigh\noiseprobe.c</Filename><XPos>0</XPos><YPos>61</YPos><SelStart>2776</SelStart><SelEnd>2776</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\openwsn\07-App\bbk\bbk.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>525</SelStart><SelEnd>525</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\openwsn\07-App\bbk\bbk.c</Filename><XPos>0</XPos><YPos>114</YPos><SelStart>4312</SelStart><SelEnd>4312</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\openwsn\02b-MAChigh\adaptiveKalman.c</Filename><XPos>0</XPos><YPos>40</YPos><SelStart>1953</SelStart><SelEnd>1953</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-00eb3830><key>iaridepm.enu1</key></Toolbar-00eb3830></Sizes></Row0></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>623</Bottom><Right>310</Right><x>-2</x><y>-2</y><xscreen>1185</xscreen><yscreen>145</yscreen><sizeHorzCX>822917</sizeHorzCX><sizeHorzCY>177262</sizeHorzCY><sizeVertCX>216667</sizeVertCX><sizeVertCY>764059</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>150</Bottom><Right>1442</Right><x>-2</x><y>-2</y><xscreen>1444</xscreen><yscreen>152</yscreen><sizeHorzCX>1002778</sizeHorzCX><sizeHorzCY>185819</sizeHorzCY><sizeVertCX>822917</sizeVertCX><sizeVertCY>177262</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Workspace>
+
+
