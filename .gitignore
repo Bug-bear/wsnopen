@@ -1,4 +1,5 @@
-*.dep
 projects/*
 !projects/common
 !projects/gina
+
+*.dep
