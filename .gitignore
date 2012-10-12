@@ -4,3 +4,4 @@ projects/*
 
 .svn/
 *.dep
+*.pbi
