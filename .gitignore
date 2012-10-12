@@ -5,3 +5,5 @@ projects/*
 .svn/
 *.dep
 *.pbi
+*.pbd
+*.wsdt
