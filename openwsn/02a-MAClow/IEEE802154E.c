@@ -87,6 +87,7 @@ uint8_t syn1st=0;
 uint16_t local_t_mask = 0xFFFF;
 uint16_t local_TxMask = 0xFFFF;
 uint16_t local_RxMask = 0xFFFF;
+bool dealingWithRoot = FALSE;
 
 //=========================== prototypes ======================================
 
@@ -690,6 +691,7 @@ port_INLINE void activity_ti1ORri1() {
    cellType = schedule_getType();
    switch (cellType) {
       case CELLTYPE_ADV:
+        dealingWithRoot = TRUE; //all ADVs are exchanged in chan 26
          // stop using serial
          openserial_stop();
          // look for an ADV packet in the queue
@@ -721,6 +723,9 @@ port_INLINE void activity_ti1ORri1() {
             //schedule_getNeighbor(&neighbor);            
             /* piggy305: module-wide equivalent to hold the addr of other end */
             schedule_getNeighbor(&ieee154e_vars.otherEnd); 
+            if(neighbors_isPreferredParent(&ieee154e_vars.otherEnd)){
+              dealingWithRoot = TRUE;
+            }
             ieee154e_vars.dataToSend = openqueue_macGetDataPacket(&ieee154e_vars.otherEnd);
          } else {
             ieee154e_vars.dataToSend = NULL;
@@ -1760,7 +1765,7 @@ different channel offsets in the same slot.
 port_INLINE uint8_t calculateFrequency(uint8_t channelOffset) {
    //return 11+(asn+channelOffset)%16;
    // poipoi: no channel hopping
-  if(idmanager_getIsDAGroot()){ 
+  if(idmanager_getIsDAGroot() || dealingWithRoot){ 
     return 26;  
   }
   
@@ -1910,6 +1915,8 @@ void endSlot() {
       // reset local variable
       ieee154e_vars.ackReceived = NULL;
    }
+               
+   dealingWithRoot = FALSE;
    
    // change state
    changeState(S_SLEEP);
