@@ -691,7 +691,7 @@ port_INLINE void activity_ti1ORri1() {
    cellType = schedule_getType();
    switch (cellType) {
       case CELLTYPE_ADV:
-        dealingWithRoot = TRUE; //all ADVs are exchanged in chan 26
+        dealingWithRoot = TRUE; // poiiop all ADVs are exchanged in chan 26
          // stop using serial
          openserial_stop();
          // look for an ADV packet in the queue
@@ -723,9 +723,10 @@ port_INLINE void activity_ti1ORri1() {
             //schedule_getNeighbor(&neighbor);            
             /* piggy305: module-wide equivalent to hold the addr of other end */
             schedule_getNeighbor(&ieee154e_vars.otherEnd); 
-            if(neighbors_isPreferredParent(&ieee154e_vars.otherEnd)){
+            //poiiop
+            if(ieee154e_vars.otherEnd.addr_64b[7]==DEBUG_MOTEID_MASTER){
               dealingWithRoot = TRUE;
-            }
+            }//
             ieee154e_vars.dataToSend = openqueue_macGetDataPacket(&ieee154e_vars.otherEnd);
          } else {
             ieee154e_vars.dataToSend = NULL;
@@ -1765,9 +1766,10 @@ different channel offsets in the same slot.
 port_INLINE uint8_t calculateFrequency(uint8_t channelOffset) {
    //return 11+(asn+channelOffset)%16;
    // poipoi: no channel hopping
+  //poiiop
   if(idmanager_getIsDAGroot() || dealingWithRoot){ 
     return 26;  
-  }
+  }//
   
    //return 11+(ieee154e_vars.asnOffset+channelOffset)%16; //channel hopping
   
@@ -1916,7 +1918,7 @@ void endSlot() {
       ieee154e_vars.ackReceived = NULL;
    }
                
-   dealingWithRoot = FALSE;
+   dealingWithRoot = FALSE; //poiiop: reset default status when exiting slots
    
    // change state
    changeState(S_SLEEP);
@@ -1991,18 +1993,16 @@ void handleRecvPkt(OpenQueueEntry_t* pkt){
       memcpy(&(((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->asn[1]),(uint8_t*)(&(ieee154e_vars.asn.bytes2and3)),sizeof(uint16_t));
       memcpy(&(((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->asn[3]),(uint8_t*)(&(ieee154e_vars.asn.bytes0and1)),sizeof(uint16_t));
       */
-    
-      //((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->rssi = pkt->l1_rssi;
-      
-      ((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->channel = ieee154e_vars.freq;
       
       //((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->recasnOffset = ieee154e_vars.asnOffset;
       
       //link-mask (current), for the purpose of display at DAGroot
-      //if (!idmanager_getIsDAGroot()){ //only replace payload before reaching DAGroot
+      if (!idmanager_getIsDAGroot()){ //only replace payload before reaching DAGroot
+        ((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->channel = ieee154e_vars.freq;
+        
         ((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->Rmask.pos[0] = (uint8_t)((ieee154e_vars.linkMask & 0xff00)>>8);
         ((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->Rmask.pos[1] = (uint8_t)((ieee154e_vars.linkMask & 0x00ff)>>0);
-      //}
+      }
       
       /* Mask-relate dubug 
       ((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->mask.pos[0] = (uint8_t)((local_t_mask & 0xff00)>>8);
