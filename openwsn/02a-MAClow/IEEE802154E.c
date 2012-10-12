@@ -1760,7 +1760,9 @@ different channel offsets in the same slot.
 port_INLINE uint8_t calculateFrequency(uint8_t channelOffset) {
    //return 11+(asn+channelOffset)%16;
    // poipoi: no channel hopping
-   // return 26;  
+  if(idmanager_getIsDAGroot()){ 
+    return 26;  
+  }
   
    //return 11+(ieee154e_vars.asnOffset+channelOffset)%16; //channel hopping
   

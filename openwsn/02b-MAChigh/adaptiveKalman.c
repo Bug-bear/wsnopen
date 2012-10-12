@@ -8,25 +8,25 @@
 
 /*** Globals ***/
 //intial Q for 16 channels
-float Q[] = {0.58,
-                   0.6,
-                   0.63,
-                   0.53,
-                   0.51,
-                   0.53,
-                   0.5,
-                   0.52,
-                   0.52,
-                   0.5,
-                   0.53,
-                   0.49,
-                   0.57,
-                   0.54,
-                   0.5,
-                   0.51}; 
+float Q[] = {      25.6,
+                   17.46,
+                   11.49,
+                   15.58,
+                   26.36,
+                   27.74,
+                   24.41,
+                   33.96,
+                   40.14,
+                   29.1,
+                   12.45,
+                   11.59,
+                   12.9,
+                   10.35,
+                   37.54,
+                   22.45}; 
 
 // The observation noise is constant for all channels, derived from cc2420 datasheet
-const uint8_t R = 9;
+const uint8_t R = 1;
     
     //initial values for the kalman filter
     float x_est_last = 0;
