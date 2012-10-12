@@ -7,3 +7,6 @@ projects/*
 *.pbi
 *.pbd
 *.wsdt
+*.html
+*.d43
+*.r43
