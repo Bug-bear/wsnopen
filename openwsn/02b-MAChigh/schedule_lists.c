@@ -38,8 +38,7 @@ void list_init(uint8_t NODE_ID) {
       node06,
       node07,
       node08,
-      node09,
-      node10
+      node09
    };
 
    //build invariant slots (ADV, NF, DIO)
@@ -58,19 +57,10 @@ void list_init(uint8_t NODE_ID) {
    
    //build invariant slots again (ADV, SER, NF, DIO)
    // slot 4 is SERIALRX
-   i = 4;
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   schedule_addActiveSlot(i,
-         CELLTYPE_SERIALRX,
-         FALSE,
-         0,
-         &temp_neighbor);
-
-   // slot 5 is MORESERIALRX
    i = 5;
    memset(&temp_neighbor,0,sizeof(temp_neighbor));
    schedule_addActiveSlot(i,
-         CELLTYPE_MORESERIALRX,
+         CELLTYPE_SERIALRX,
          FALSE,
          0,
          &temp_neighbor);
@@ -171,6 +161,17 @@ void node01(){
          FALSE,
          0,
          &temp_neighbor);  
+   
+   i = 4;
+   memset(&temp_neighbor,0,sizeof(temp_neighbor));
+   temp_neighbor.type             = ADDR_64B;
+   temp_neighbor.addr_64b[6]    = 0xED;
+   temp_neighbor.addr_64b[7]    = DEBUG_MOTEID_5;
+   schedule_addActiveSlot(i,
+         CELLTYPE_TXRX,
+         FALSE,
+         0,
+         &temp_neighbor);     
 }
 
 void node02(){
@@ -193,39 +194,17 @@ void node02(){
    memset(&temp_neighbor,0,sizeof(temp_neighbor));
    temp_neighbor.type             = ADDR_64B;
    temp_neighbor.addr_64b[6]    = 0xED;
-   temp_neighbor.addr_64b[7]    = DEBUG_MOTEID_5;
-   schedule_addActiveSlot(i,
-         CELLTYPE_TXRX,
-         FALSE,
-         0,
-         &temp_neighbor);     
-
-   i = 3;
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   temp_neighbor.type             = ADDR_64B;
-   temp_neighbor.addr_64b[6]    = 0xED;
    temp_neighbor.addr_64b[7]    = DEBUG_MOTEID_6;
    schedule_addActiveSlot(i,
          CELLTYPE_TXRX,
          FALSE,
          0,
-         &temp_neighbor);   
+         &temp_neighbor);     
 }
 
 void node03(){
    uint8_t     i;
    open_addr_t temp_neighbor;
-   
-   i = 1;
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   temp_neighbor.type             = ADDR_64B;
-   temp_neighbor.addr_64b[6]    = 0xED;
-   temp_neighbor.addr_64b[7]    = DEBUG_MOTEID_7;
-   schedule_addActiveSlot(i,
-         CELLTYPE_TXRX,
-         FALSE,
-         0,
-         &temp_neighbor);
    
    i = 2;
    memset(&temp_neighbor,0,sizeof(temp_neighbor));
@@ -242,7 +221,7 @@ void node03(){
    memset(&temp_neighbor,0,sizeof(temp_neighbor));
    temp_neighbor.type             = ADDR_64B;
    temp_neighbor.addr_64b[6]    = 0xED;
-   temp_neighbor.addr_64b[7]    = DEBUG_MOTEID_8;
+   temp_neighbor.addr_64b[7]    = DEBUG_MOTEID_7;
    schedule_addActiveSlot(i,
          CELLTYPE_TXRX,
          FALSE,
@@ -251,6 +230,33 @@ void node03(){
 }
 
 void node04(){
+   uint8_t     i;
+   open_addr_t temp_neighbor;
+   
+   i = 3;
+   memset(&temp_neighbor,0,sizeof(temp_neighbor));
+   temp_neighbor.type             = ADDR_64B;
+   temp_neighbor.addr_64b[6]    = 0xED;
+   temp_neighbor.addr_64b[7]    = DEBUG_MOTEID_MASTER;
+   schedule_addActiveSlot(i,
+         CELLTYPE_TXRX,
+         FALSE,
+         0,
+         &temp_neighbor);
+   
+   i = 4;
+   memset(&temp_neighbor,0,sizeof(temp_neighbor));
+   temp_neighbor.type             = ADDR_64B;
+   temp_neighbor.addr_64b[6]    = 0xED;
+   temp_neighbor.addr_64b[7]    = DEBUG_MOTEID_8;
+   schedule_addActiveSlot(i,
+         CELLTYPE_TXRX,
+         FALSE,
+         0,
+         &temp_neighbor);   
+}
+
+void node05(){
    uint8_t     i;
    open_addr_t temp_neighbor;
    
@@ -265,18 +271,7 @@ void node04(){
          0,
          &temp_neighbor);
    
-   i = 2;
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   temp_neighbor.type             = ADDR_64B;
-   temp_neighbor.addr_64b[6]    = 0xED;
-   temp_neighbor.addr_64b[7]    = DEBUG_MOTEID_10;
-   schedule_addActiveSlot(i,
-         CELLTYPE_TXRX,
-         FALSE,
-         0,
-         &temp_neighbor);   
-   
-   i = 3;
+   i = 4;
    memset(&temp_neighbor,0,sizeof(temp_neighbor));
    temp_neighbor.type             = ADDR_64B;
    temp_neighbor.addr_64b[6]    = 0xED;
@@ -288,59 +283,11 @@ void node04(){
          &temp_neighbor);
 }
 
-void node05(){
-   uint8_t     i;
-   open_addr_t temp_neighbor;
-   
-   i = 1;//place holder
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   schedule_addActiveSlot(i,
-         CELLTYPE_SERIALRX,
-         FALSE,
-         0,
-         &temp_neighbor);
-   
-   i = 2;
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   temp_neighbor.type             = ADDR_64B;
-   temp_neighbor.addr_64b[6]    = 0xED;
-   temp_neighbor.addr_64b[7]    = DEBUG_MOTEID_2;
-   schedule_addActiveSlot(i,
-         CELLTYPE_TXRX,
-         FALSE,
-         0,
-         &temp_neighbor);
-   
-   i = 3;//place holder
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   schedule_addActiveSlot(i,
-         CELLTYPE_SERIALRX,
-         FALSE,
-         0,
-         &temp_neighbor);
-}
-
 void node06(){
    uint8_t     i;
    open_addr_t temp_neighbor;
    
-   i = 1;//place holder
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   schedule_addActiveSlot(i,
-         CELLTYPE_SERIALRX,
-         FALSE,
-         0,
-         &temp_neighbor);
-   
-   i = 2;//place holder
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   schedule_addActiveSlot(i,
-         CELLTYPE_SERIALRX,
-         FALSE,
-         0,
-         &temp_neighbor);
-   
-   i = 3;
+   i = 2;
    memset(&temp_neighbor,0,sizeof(temp_neighbor));
    temp_neighbor.type             = ADDR_64B;
    temp_neighbor.addr_64b[6]    = 0xED;
@@ -356,7 +303,7 @@ void node07(){
    uint8_t     i;
    open_addr_t temp_neighbor;
    
-   i = 1;
+   i = 3;
    memset(&temp_neighbor,0,sizeof(temp_neighbor));
    temp_neighbor.type             = ADDR_64B;
    temp_neighbor.addr_64b[6]    = 0xED;
@@ -366,49 +313,17 @@ void node07(){
          FALSE,
          0,
          &temp_neighbor);
-   
-   i = 2;//place holder
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   schedule_addActiveSlot(i,
-         CELLTYPE_SERIALRX,
-         FALSE,
-         0,
-         &temp_neighbor);
-   
-   i = 3;//place holder
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   schedule_addActiveSlot(i,
-         CELLTYPE_SERIALRX,
-         FALSE,
-         0,
-         &temp_neighbor);
 }
 
 void node08(){
    uint8_t     i;
    open_addr_t temp_neighbor;
    
-   i = 1;//place holder
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   schedule_addActiveSlot(i,
-         CELLTYPE_SERIALRX,
-         FALSE,
-         0,
-         &temp_neighbor);
-   
-   i = 2;//place holder
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   schedule_addActiveSlot(i,
-         CELLTYPE_SERIALRX,
-         FALSE,
-         0,
-         &temp_neighbor);
-   
-   i = 3;
+   i = 4;
    memset(&temp_neighbor,0,sizeof(temp_neighbor));
    temp_neighbor.type             = ADDR_64B;
    temp_neighbor.addr_64b[6]    = 0xED;
-   temp_neighbor.addr_64b[7]    = DEBUG_MOTEID_3;
+   temp_neighbor.addr_64b[7]    = DEBUG_MOTEID_4;
    schedule_addActiveSlot(i,
          CELLTYPE_TXRX,
          FALSE,
@@ -424,57 +339,9 @@ void node09(){
    memset(&temp_neighbor,0,sizeof(temp_neighbor));
    temp_neighbor.type             = ADDR_64B;
    temp_neighbor.addr_64b[6]    = 0xED;
-   temp_neighbor.addr_64b[7]    = DEBUG_MOTEID_4;
+   temp_neighbor.addr_64b[7]    = DEBUG_MOTEID_5;
    schedule_addActiveSlot(i,
          CELLTYPE_TXRX,
-         FALSE,
-         0,
-         &temp_neighbor);
-   
-   i = 2;//place holder
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   schedule_addActiveSlot(i,
-         CELLTYPE_SERIALRX,
-         FALSE,
-         0,
-         &temp_neighbor);
-   
-   i = 3;//place holder
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   schedule_addActiveSlot(i,
-         CELLTYPE_SERIALRX,
-         FALSE,
-         0,
-         &temp_neighbor);
-}
-
-void node10(){
-   uint8_t     i;
-   open_addr_t temp_neighbor;
-   
-   i = 1;//place holder
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   schedule_addActiveSlot(i,
-         CELLTYPE_SERIALRX,
-         FALSE,
-         0,
-         &temp_neighbor);
-   
-   i = 2;
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   temp_neighbor.type             = ADDR_64B;
-   temp_neighbor.addr_64b[6]    = 0xED;
-   temp_neighbor.addr_64b[7]    = DEBUG_MOTEID_4;
-   schedule_addActiveSlot(i,
-         CELLTYPE_TXRX,
-         FALSE,
-         0,
-         &temp_neighbor);
-   
-   i = 3;//place holder
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   schedule_addActiveSlot(i,
-         CELLTYPE_SERIALRX,
          FALSE,
          0,
          &temp_neighbor);

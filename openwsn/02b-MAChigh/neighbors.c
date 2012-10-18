@@ -263,20 +263,21 @@ void neighbors_getPreferredParent(open_addr_t* addressToWrite, uint8_t addr_type
         case DEBUG_MOTEID_2:
         case DEBUG_MOTEID_3:
         case DEBUG_MOTEID_4:
+        case DEBUG_MOTEID_5:  
           nextHop.addr_64b[7]=DEBUG_MOTEID_MASTER;
           break;
-        case DEBUG_MOTEID_5:
         case DEBUG_MOTEID_6:
           nextHop.addr_64b[7]=DEBUG_MOTEID_2;
           break;
         case DEBUG_MOTEID_7:
-        case DEBUG_MOTEID_8:
           nextHop.addr_64b[7]=DEBUG_MOTEID_3;
-          break;      
-        case DEBUG_MOTEID_9:
-        case DEBUG_MOTEID_10:
+          break;
+        case DEBUG_MOTEID_8: 
           nextHop.addr_64b[7]=DEBUG_MOTEID_4;
-          break;              
+          break;    
+        case DEBUG_MOTEID_9: 
+          nextHop.addr_64b[7]=DEBUG_MOTEID_5;
+          break;           
       }
       
       memcpy(addressToWrite,&nextHop,sizeof(open_addr_t));
@@ -486,36 +487,41 @@ void neighbors_updateMyDAGrankAndNeighborPreference() {
               case DEBUG_MOTEID_2:
               case DEBUG_MOTEID_3:
               case DEBUG_MOTEID_4:
+              case DEBUG_MOTEID_5:  
                if (neighbors_vars.neighbors[i].addr_64b.addr_64b[7]==DEBUG_MOTEID_MASTER) {
-               neighbors_vars.myDAGrank=neighbors_vars.neighbors[i].DAGrank+temp_linkCost;
-               temp_preferredParentExists=TRUE;
-               temp_preferredParentRow=i;
+                 neighbors_vars.myDAGrank=neighbors_vars.neighbors[i].DAGrank+temp_linkCost;
+                 temp_preferredParentExists=TRUE;
+                 temp_preferredParentRow=i;
                }
                break;
-              case DEBUG_MOTEID_5:
               case DEBUG_MOTEID_6:
                if (neighbors_vars.neighbors[i].addr_64b.addr_64b[7]==DEBUG_MOTEID_2) {
-               neighbors_vars.myDAGrank=neighbors_vars.neighbors[i].DAGrank+temp_linkCost;
-               temp_preferredParentExists=TRUE;
-               temp_preferredParentRow=i;
+                 neighbors_vars.myDAGrank=neighbors_vars.neighbors[i].DAGrank+temp_linkCost;
+                 temp_preferredParentExists=TRUE;
+                 temp_preferredParentRow=i;
                }
                break;
               case DEBUG_MOTEID_7:
-              case DEBUG_MOTEID_8:
                if (neighbors_vars.neighbors[i].addr_64b.addr_64b[7]==DEBUG_MOTEID_3) {
-               neighbors_vars.myDAGrank=neighbors_vars.neighbors[i].DAGrank+temp_linkCost;
-               temp_preferredParentExists=TRUE;
-               temp_preferredParentRow=i;
+                 neighbors_vars.myDAGrank=neighbors_vars.neighbors[i].DAGrank+temp_linkCost;
+                 temp_preferredParentExists=TRUE;
+                 temp_preferredParentRow=i;
                }
                break;     
-              case DEBUG_MOTEID_9:
-              case DEBUG_MOTEID_10:
+              case DEBUG_MOTEID_8:
                if (neighbors_vars.neighbors[i].addr_64b.addr_64b[7]==DEBUG_MOTEID_4) {
-               neighbors_vars.myDAGrank=neighbors_vars.neighbors[i].DAGrank+temp_linkCost;
-               temp_preferredParentExists=TRUE;
-               temp_preferredParentRow=i;
+                 neighbors_vars.myDAGrank=neighbors_vars.neighbors[i].DAGrank+temp_linkCost;
+                 temp_preferredParentExists=TRUE;
+                 temp_preferredParentRow=i;
                }
-               break;                  
+               break;  
+              case DEBUG_MOTEID_9:
+               if (neighbors_vars.neighbors[i].addr_64b.addr_64b[7]==DEBUG_MOTEID_5) {
+                 neighbors_vars.myDAGrank=neighbors_vars.neighbors[i].DAGrank+temp_linkCost;
+                 temp_preferredParentExists=TRUE;
+                 temp_preferredParentRow=i;
+               }
+               break;                
                default:
                break;
              }
