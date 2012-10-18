@@ -88,7 +88,8 @@ uint16_t local_t_mask = 0xFFFF;
 uint16_t local_TxMask = 0xFFFF;
 uint16_t local_RxMask = 0xFFFF;
 bool dealingWithRoot = FALSE; //poiiop
-
+uint8_t ctr = 0;
+cellType_t  thisCell;
 //=========================== prototypes ======================================
 
 // SYNCHRONIZING
@@ -589,9 +590,10 @@ port_INLINE void activity_synchronize_endOfFrame(PORT_TIMER_WIDTH capturedTime) 
          
          /* Only then start sending (piggy304) */
          if((!idmanager_getIsDAGroot())&&(syn1st==0)){ 
-         //if(syn1st==0){ //allow DAGroot to ini dcs so that it can change channel for test
-           bbk_init(); 
-           syn1st++;
+           //if(idmanager_getMyID(ADDR_16B)->addr_16b[1] != DEBUG_MOTEID_2){ //poiiop: making 02 a pure forwarder
+             bbk_init(); 
+             syn1st++;
+           //}
          }
 
          // log the "error"
@@ -689,9 +691,10 @@ port_INLINE void activity_ti1ORri1() {
 
    // check the schedule to see what type of slot this is
    cellType = schedule_getType();
+   thisCell = cellType;
    switch (cellType) {
       case CELLTYPE_ADV:
-        dealingWithRoot = TRUE; // poiiop all ADVs are exchanged in chan 26
+         //dealingWithRoot = TRUE; // poiiop all ADVs are exchanged in chan 26
          // stop using serial
          openserial_stop();
          // look for an ADV packet in the queue
@@ -723,15 +726,15 @@ port_INLINE void activity_ti1ORri1() {
             //schedule_getNeighbor(&neighbor);            
             /* piggy305: module-wide equivalent to hold the addr of other end */
             schedule_getNeighbor(&ieee154e_vars.otherEnd); 
+            //poiiop
+            //if(ieee154e_vars.otherEnd.addr_64b[7] == DEBUG_MOTEID_MASTER){
+              //dealingWithRoot = TRUE;
+            //}
             ieee154e_vars.dataToSend = openqueue_macGetDataPacket(&ieee154e_vars.otherEnd);
          } else {
             ieee154e_vars.dataToSend = NULL;
          }
          if (ieee154e_vars.dataToSend!=NULL) {   // I have a packet to send
-            //poiiop
-            if(ieee154e_vars.otherEnd.addr_64b[7]==DEBUG_MOTEID_MASTER){
-              dealingWithRoot = TRUE;
-            }//
             // change state
             changeState(S_TXDATAOFFSET);
             // change owner
@@ -752,10 +755,6 @@ port_INLINE void activity_ti1ORri1() {
             }
             convert(ieee154e_vars.linkMask, ieee154e_vars.linkArray);
             /*********************/  
-            
-            
-            /* piggy317a: manipulate outgoing payload if from BBK */
-            insertOutgoing(ieee154e_vars.dataToSend);
             
             // arm tt1
             radiotimer_schedule(DURATION_tt1);
@@ -832,6 +831,9 @@ port_INLINE void activity_ti2() {
 
    // calculate the frequency to transmit on
    ieee154e_vars.freq = calculateFrequency(schedule_getChannelOffset()); 
+   
+   /* piggy317a: manipulate outgoing payload if from BBK */
+   insertOutgoing(ieee154e_vars.dataToSend);
 
    // configure the radio for that frequency
    //radio_setFrequency(frequency);
@@ -1764,16 +1766,20 @@ different channel offsets in the same slot.
 \returns The calculated frequency channel, an integer between 11 and 26.
 */
 port_INLINE uint8_t calculateFrequency(uint8_t channelOffset) {
-   //return 11+(asn+channelOffset)%16;
-   // poipoi: no channel hopping
-  //poiiop
-  if(idmanager_getIsDAGroot() || dealingWithRoot){ 
-    return 26;  
-  }//
-  
-   //return 11+(ieee154e_vars.asnOffset+channelOffset)%16; //channel hopping
-  
-   /* piggy314: check blacklist and generate new channel if neccessary */
+  uint8_t ret;
+  /* poiiop */
+  if(((idmanager_getIsDAGroot()) && (ieee154e_vars.otherEnd.addr_64b[7] == DEBUG_MOTEID_2))
+    ||((idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_2) && (ieee154e_vars.otherEnd.addr_64b[7] == DEBUG_MOTEID_MASTER)))
+  { 
+    ctr = 0xbb;
+    ret = SYNCHRONIZING_CHANNEL;  
+  } 
+  else
+  {
+    ctr = 0xcc;
+    ret =  11+(ieee154e_vars.asnOffset+channelOffset)%16; //channel hopping
+  }
+   /* piggy314: check blacklist and generate new channel if neccessary 
    uint8_t temp_channel = 11+(ieee154e_vars.asnOffset+channelOffset)%16;
   
    if((schedule_getType()!=CELLTYPE_NF)&&(schedule_getType()!=CELLTYPE_ADV)
@@ -1783,8 +1789,9 @@ port_INLINE uint8_t calculateFrequency(uint8_t channelOffset) {
       if(!ieee154e_vars.linkArray[temp_channel-11]) 
           temp_channel=nextAvail(temp_channel-11);
    }
-   
-   return temp_channel;
+   ret = temp_channel;*/
+  
+   return ret;
 }
 
 /* piggy315: come up with next usable channel */
@@ -1995,10 +2002,10 @@ void handleRecvPkt(OpenQueueEntry_t* pkt){
       */
       
       //((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->recasnOffset = ieee154e_vars.asnOffset;
+      //((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->channel = ieee154e_vars.freq;
       
       //link-mask (current), for the purpose of display at DAGroot
       if (!idmanager_getIsDAGroot()){ //only replace payload before reaching DAGroot
-        ((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->channel = ieee154e_vars.freq;
         
         ((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->Rmask.pos[0] = (uint8_t)((ieee154e_vars.linkMask & 0xff00)>>8);
         ((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->Rmask.pos[1] = (uint8_t)((ieee154e_vars.linkMask & 0x00ff)>>0);
@@ -2026,7 +2033,14 @@ void insertOutgoing(OpenQueueEntry_t* pkt){
   {
     case IEEE154_TYPE_DATA:
       if((pkt->creator==COMPONENT_BBK))
-      {       
+      {             
+      memcpy(&(((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->asn[0]),(uint8_t*)(&(ieee154e_vars.asn.byte4)),sizeof(uint8_t));
+      memcpy(&(((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->asn[1]),(uint8_t*)(&(ieee154e_vars.asn.bytes2and3)),sizeof(uint16_t));
+      memcpy(&(((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->asn[3]),(uint8_t*)(&(ieee154e_vars.asn.bytes0and1)),sizeof(uint16_t));
+      
+      ((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->channel = ieee154e_vars.freq;
+      ((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->retry = ctr;
+      
       //((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->sent.pos[0] = (uint8_t)((parentM & 0xff00)>>8);
       //((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->sent.pos[1] = (uint8_t)((parentM & 0x00ff)>>0);
 

@@ -54,24 +54,9 @@ void list_init(uint8_t NODE_ID) {
          &temp_neighbor);
       
    //build id-specific slots
-   /*switch(NODE_ID){
-    case DEBUG_MOTEID_MASTER:
-        node[0]();
-        break;
-    case DEBUG_MOTEID_2:
-        node[1]();
-        break;
-    case DEBUG_MOTEID_3:
-        node[2]();
-        break;   
-    case DEBUG_MOTEID_4:
-        node[3]();
-        break;    
-   }*/
    node[NODE_ID-1]();
    
    //build invariant slots again (ADV, SER, NF, DIO)
-   
    // slot 4 is SERIALRX
    i = 4;
    memset(&temp_neighbor,0,sizeof(temp_neighbor));
@@ -92,7 +77,7 @@ void list_init(uint8_t NODE_ID) {
    
    // Noise Floor Probe
    /* piggy903: only enable blacklisting in non-DAGroot motes */
-   if(NODE_ID==DEBUG_MOTEID_MASTER){
+   if(NODE_ID == DEBUG_MOTEID_MASTER){
    i = 6; 
    memset(&temp_neighbor,0,sizeof(temp_neighbor));
    schedule_addActiveSlot(i,
