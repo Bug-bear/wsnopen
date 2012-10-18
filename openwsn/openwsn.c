@@ -47,6 +47,8 @@
 #include "neighbors.h"
 #include "res.h"
 #include "schedule.h"
+#include "kalman.h"
+#include "adaptivekalman.h"
 #include "noiseprobe.h" //noise floor module
 
 //l2a
@@ -83,7 +85,9 @@ void openwsn_init() {
    // 02b-RES
    schedule_init();
    res_init();
-   neighbors_init(); 
+   neighbors_init();
+   kalman_init();
+   adaptiveKalman_init();
    nf_init(); //noise floor module
    // 03a-IPHC
    openbridge_init();

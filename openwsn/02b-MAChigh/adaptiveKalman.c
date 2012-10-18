@@ -1,83 +1,90 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "kalman.h"
+#include "adaptivekalman.h"
 #include "variance.h"
 #include "openwsn.h"
 #include "noiseprobe.h"
 
-/*** Globals ***/
-//intial Q for 16 channels
-float Q[] = {      25.6,
-                   17.46,
-                   11.49,
-                   15.58,
-                   26.36,
-                   27.74,
-                   24.41,
-                   33.96,
-                   40.14,
-                   29.1,
-                   12.45,
-                   11.59,
-                   12.9,
-                   10.35,
-                   37.54,
-                   22.45}; 
+// Globals
+typedef struct {
+   float Q[16];
+   float R;
+   float P_last[16];
+   float K;
+} adaptiveKalman_vars_t;
 
-// The observation noise is constant for all channels, derived from cc2420 datasheet
-const uint8_t R = 1;
+adaptiveKalman_vars_t adaptiveKalman_vars;
+
+void adaptiveKalman_init() {
+   uint8_t     i;
+
+   // reset local variables
+   memset(&adaptiveKalman_vars,0,sizeof(adaptiveKalman_vars_t));
+
+    //the noise in the system    
+    adaptiveKalman_vars.Q[0] = 25.6;
+    adaptiveKalman_vars.Q[1] = 17.46;
+    adaptiveKalman_vars.Q[2] = 11.49;
+    adaptiveKalman_vars.Q[3] = 15.58;
+    adaptiveKalman_vars.Q[4] = 26.36;
+    adaptiveKalman_vars.Q[5] = 27.74;
+    adaptiveKalman_vars.Q[6] = 24.41;
+    adaptiveKalman_vars.Q[7] = 33.96;
+    adaptiveKalman_vars.Q[8] = 40.14;
+    adaptiveKalman_vars.Q[9] = 29.1;
+    adaptiveKalman_vars.Q[10] = 12.45;
+    adaptiveKalman_vars.Q[11] = 11.59;
+    adaptiveKalman_vars.Q[12] = 12.9;
+    adaptiveKalman_vars.Q[13] = 10.35;
+    adaptiveKalman_vars.Q[14] = 37.54;
+    adaptiveKalman_vars.Q[15] = 22.45; 
+    adaptiveKalman_vars.R = 1; //covariance of the observation noise
     
-    //initial values for the kalman filter
-    float x_est_last = 0;
-    //float P_last = 1;
-    float P_last[] ={1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
-    float K;  //Kalman gain
-    
-    float P;  //estimate covariance
-    float P_temp;
-    float x_temp_est;
-    float x_est;  //updated estimation (final product)
-    float z_measured; //the 'noisy' value we measured
+    memset(&adaptiveKalman_vars.P_last, 1,sizeof(adaptiveKalman_vars.P_last));
+    //adaptiveKalman_vars.P_last[] ={1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+}
+
+
   
 //float kalman(float raw, float last, uint8_t index){
-int16_t kalman(int16_t raw, int16_t last, uint8_t index){
+int16_t adaptiveKalman(int16_t raw, int16_t last, uint8_t index){
     
     //measure
-    z_measured = (float)raw/SCALAR;
+    float z_measured = (float)raw/SCALAR;
     
     //update record of channel variance
     updateVar(z_measured, index); 
     
     //initialize with a measurement
-    x_est_last = (float)last/SCALAR;
+    float x_est_last = (float)last/SCALAR;
     
     //do a prediction
-    x_temp_est = x_est_last;
+    float x_temp_est = x_est_last;
     //P_temp = P_last + Q;
     //x_temp_est = x_est_last[index];
-    P_temp = P_last[index] + Q[index];
-    K = P_temp * (1.0/(P_temp + R));
+    float P_temp = adaptiveKalman_vars.P_last[index] + adaptiveKalman_vars.Q[index];
+    adaptiveKalman_vars.K = P_temp * (1.0/(P_temp + adaptiveKalman_vars.R));
     
     //correction
-    x_est = x_temp_est + K * (z_measured - x_temp_est); 
-    P = (1- K) * P_temp;
+    float x_est = x_temp_est + adaptiveKalman_vars.K * (z_measured - x_temp_est); 
+    float P = (1- adaptiveKalman_vars.K) * P_temp;
         
     //update our last's
     //P_last = P;
     //x_est_last = x_est;
-    P_last[index] = P;
+    adaptiveKalman_vars.P_last[index] = P;
     
     return (int16_t)(x_est*SCALAR);
 }
 
 
 void adjustQ(uint8_t channel){
-  Q[channel] = Q[channel]*getVarRatio(channel);
+  adaptiveKalman_vars.Q[channel] = adaptiveKalman_vars.Q[channel]*getVarRatio(channel);
 }
 
 // to be called in noiseprobe.c
 void adjustQall(){
   for(uint8_t i=0; i<16; i++)
-    Q[i] = Q[i]*getVarRatio(i);
+    adaptiveKalman_vars.Q[i] = adaptiveKalman_vars.Q[i]*getVarRatio(i);
 }
