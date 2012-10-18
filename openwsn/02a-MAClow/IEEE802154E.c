@@ -747,10 +747,6 @@ port_INLINE void activity_ti1ORri1() {
             convert(ieee154e_vars.linkMask, ieee154e_vars.linkArray);
             /*********************/  
             
-            
-            /* piggy317a: manipulate outgoing payload if from BBK */
-            insertOutgoing(ieee154e_vars.dataToSend);
-            
             // arm tt1
             radiotimer_schedule(DURATION_tt1);
          } else if (cellType==CELLTYPE_TX){
@@ -826,6 +822,9 @@ port_INLINE void activity_ti2() {
 
    // calculate the frequency to transmit on
    ieee154e_vars.freq = calculateFrequency(schedule_getChannelOffset()); 
+    
+   /* piggy317a: manipulate outgoing payload if from BBK */
+   insertOutgoing(ieee154e_vars.dataToSend);   
 
    // configure the radio for that frequency
    //radio_setFrequency(frequency);
@@ -1985,7 +1984,6 @@ void handleRecvPkt(OpenQueueEntry_t* pkt){
     
       //((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->rssi = pkt->l1_rssi;
       
-      ((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->channel = ieee154e_vars.freq;
       
       //((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->recasnOffset = ieee154e_vars.asnOffset;
       
@@ -2018,6 +2016,8 @@ void insertOutgoing(OpenQueueEntry_t* pkt){
     case IEEE154_TYPE_DATA:
       if((pkt->creator==COMPONENT_BBK))
       {       
+      ((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->channel = ieee154e_vars.freq;
+      
       //((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->sent.pos[0] = (uint8_t)((parentM & 0xff00)>>8);
       //((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->sent.pos[1] = (uint8_t)((parentM & 0x00ff)>>0);
 
