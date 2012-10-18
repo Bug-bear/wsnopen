@@ -87,9 +87,7 @@ uint8_t syn1st=0;
 uint16_t local_t_mask = 0xFFFF;
 uint16_t local_TxMask = 0xFFFF;
 uint16_t local_RxMask = 0xFFFF;
-bool dealingWithRoot = FALSE; //poiiop
 uint8_t ctr = 0;
-cellType_t  thisCell;
 //=========================== prototypes ======================================
 
 // SYNCHRONIZING
@@ -691,10 +689,8 @@ port_INLINE void activity_ti1ORri1() {
 
    // check the schedule to see what type of slot this is
    cellType = schedule_getType();
-   thisCell = cellType;
    switch (cellType) {
       case CELLTYPE_ADV:
-         //dealingWithRoot = TRUE; // poiiop all ADVs are exchanged in chan 26
          // stop using serial
          openserial_stop();
          // look for an ADV packet in the queue
@@ -726,10 +722,6 @@ port_INLINE void activity_ti1ORri1() {
             //schedule_getNeighbor(&neighbor);            
             /* piggy305: module-wide equivalent to hold the addr of other end */
             schedule_getNeighbor(&ieee154e_vars.otherEnd); 
-            //poiiop
-            //if(ieee154e_vars.otherEnd.addr_64b[7] == DEBUG_MOTEID_MASTER){
-              //dealingWithRoot = TRUE;
-            //}
             ieee154e_vars.dataToSend = openqueue_macGetDataPacket(&ieee154e_vars.otherEnd);
          } else {
             ieee154e_vars.dataToSend = NULL;
@@ -1769,7 +1761,7 @@ port_INLINE uint8_t calculateFrequency(uint8_t channelOffset) {
   uint8_t ret;
   /* poiiop */
   if(((idmanager_getIsDAGroot()) && (ieee154e_vars.otherEnd.addr_64b[7] == DEBUG_MOTEID_2))
-    ||((idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_2) && (ieee154e_vars.otherEnd.addr_64b[7] == DEBUG_MOTEID_MASTER)))
+    ||((ieee154e_vars.otherEnd.addr_64b[7] == DEBUG_MOTEID_MASTER)))
   { 
     ctr = 0xbb;
     ret = SYNCHRONIZING_CHANNEL;  
@@ -1924,8 +1916,6 @@ void endSlot() {
       // reset local variable
       ieee154e_vars.ackReceived = NULL;
    }
-               
-   dealingWithRoot = FALSE; //poiiop: reset default status when exiting slots
    
    // change state
    changeState(S_SLEEP);
