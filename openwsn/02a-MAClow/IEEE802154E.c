@@ -87,7 +87,7 @@ uint8_t syn1st=0;
 uint16_t local_t_mask = 0xFFFF;
 uint16_t local_TxMask = 0xFFFF;
 uint16_t local_RxMask = 0xFFFF;
-bool dealingWithRoot = FALSE;
+bool dealingWithRoot = FALSE; //poiiop
 
 //=========================== prototypes ======================================
 
@@ -723,15 +723,15 @@ port_INLINE void activity_ti1ORri1() {
             //schedule_getNeighbor(&neighbor);            
             /* piggy305: module-wide equivalent to hold the addr of other end */
             schedule_getNeighbor(&ieee154e_vars.otherEnd); 
-            //poiiop
-            if(ieee154e_vars.otherEnd.addr_64b[7]==DEBUG_MOTEID_MASTER){
-              dealingWithRoot = TRUE;
-            }//
             ieee154e_vars.dataToSend = openqueue_macGetDataPacket(&ieee154e_vars.otherEnd);
          } else {
             ieee154e_vars.dataToSend = NULL;
          }
          if (ieee154e_vars.dataToSend!=NULL) {   // I have a packet to send
+            //poiiop
+            if(ieee154e_vars.otherEnd.addr_64b[7]==DEBUG_MOTEID_MASTER){
+              dealingWithRoot = TRUE;
+            }//
             // change state
             changeState(S_TXDATAOFFSET);
             // change owner
