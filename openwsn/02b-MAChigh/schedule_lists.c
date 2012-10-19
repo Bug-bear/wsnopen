@@ -38,7 +38,8 @@ void list_init(uint8_t NODE_ID) {
       node06,
       node07,
       node08,
-      node09
+      node09,
+      //node10
    };
 
    //build invariant slots (ADV, NF, DIO)
@@ -346,3 +347,31 @@ void node09(){
          0,
          &temp_neighbor);
 }
+/*
+void node10(){ //temp
+   uint8_t     i;
+   open_addr_t temp_neighbor;
+   
+   i = 1;
+   memset(&temp_neighbor,0,sizeof(temp_neighbor));
+   temp_neighbor.type             = ADDR_64B;
+   temp_neighbor.addr_64b[6]    = 0xED;
+   temp_neighbor.addr_64b[7]    = DEBUG_MOTEID_9;
+   schedule_addActiveSlot(i,
+         CELLTYPE_TXRX,
+         FALSE,
+         0,
+         &temp_neighbor);
+   
+   i = 4;
+   memset(&temp_neighbor,0,sizeof(temp_neighbor));
+   temp_neighbor.type             = ADDR_64B;
+   temp_neighbor.addr_64b[6]    = 0xED;
+   temp_neighbor.addr_64b[7]    = DEBUG_MOTEID_MASTER;
+   schedule_addActiveSlot(i,
+         CELLTYPE_TXRX,
+         FALSE,
+         0,
+         &temp_neighbor);
+}
+*/

@@ -277,7 +277,7 @@ void neighbors_getPreferredParent(open_addr_t* addressToWrite, uint8_t addr_type
           break;    
         case DEBUG_MOTEID_9: 
           nextHop.addr_64b[7]=DEBUG_MOTEID_5;
-          break;           
+          break;             
       }
       
       memcpy(addressToWrite,&nextHop,sizeof(open_addr_t));
@@ -487,7 +487,7 @@ void neighbors_updateMyDAGrankAndNeighborPreference() {
               case DEBUG_MOTEID_2:
               case DEBUG_MOTEID_3:
               case DEBUG_MOTEID_4:
-              case DEBUG_MOTEID_5:  
+              case DEBUG_MOTEID_5:
                if (neighbors_vars.neighbors[i].addr_64b.addr_64b[7]==DEBUG_MOTEID_MASTER) {
                  neighbors_vars.myDAGrank=neighbors_vars.neighbors[i].DAGrank+temp_linkCost;
                  temp_preferredParentExists=TRUE;
