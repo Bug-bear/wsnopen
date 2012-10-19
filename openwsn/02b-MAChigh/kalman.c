@@ -3,57 +3,69 @@
 #include <math.h>
 #include "kalman.h"
 #include "openwsn.h"
+#include "noiseprobe.h"
 
 // Globals
+typedef struct {
+   float Q[16];
+   float R;
+   float P_last[16];
+   float K;
+} kalman_vars_t;
+
+kalman_vars_t kalman_vars;
+
+void kalman_init() {
+   uint8_t     i;
+
+   // reset local variables
+   memset(&kalman_vars,0,sizeof(kalman_vars_t));
 
     //the noise in the system    
-    const float Q = 0.022; //covariance of the process noise
-    const float R = 0.617; //covariance of the observation noise
+    kalman_vars.Q[0] = 25.6;
+    kalman_vars.Q[1] = 17.46;
+    kalman_vars.Q[2] = 11.49;
+    kalman_vars.Q[3] = 15.58;
+    kalman_vars.Q[4] = 26.36;
+    kalman_vars.Q[5] = 27.74;
+    kalman_vars.Q[6] = 24.41;
+    kalman_vars.Q[7] = 33.96;
+    kalman_vars.Q[8] = 40.14;
+    kalman_vars.Q[9] = 29.1;
+    kalman_vars.Q[10] = 12.45;
+    kalman_vars.Q[11] = 11.59;
+    kalman_vars.Q[12] = 12.9;
+    kalman_vars.Q[13] = 10.35;
+    kalman_vars.Q[14] = 37.54;
+    kalman_vars.Q[15] = 22.45; 
+    kalman_vars.R = 1; //covariance of the observation noise
     
-    //const float Q = 0; 
-    //const float R = 0;  
-    
-    //initial values for the kalman filter
-    float x_est_last = 0;
-    //float P_last = 1;
-    float P_last[] ={1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
-    //float K;  //Kalman gain (key to the estimation)
-    float K[16];
-    
-    float P;  //estimate covariance
-    float P_temp;
-    float x_temp_est;
-    float x_est;  //updated estimation (final product)
-    float z_measured; //the 'noisy' value we measured
+    memset(&kalman_vars.P_last, 1,sizeof(kalman_vars.P_last));
+    //kalman_vars.P_last[] ={1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+}
   
-float kalman(float raw, float last, uint8_t index){
-    //take measure
-    z_measured = (float)raw;
+int16_t kalman(int16_t raw, int16_t last, uint8_t index){    
+    //measure
+    float z_measured = (float)raw/SCALAR;
     
     //initialize with a measurement
-    x_est_last = (float)last;
-    x_temp_est = x_est_last;
-    //x_temp_est = x_est_last[index];
+    float x_est_last = (float)last/SCALAR;
     
     //do a prediction
+    float x_temp_est = x_est_last;
     //P_temp = P_last + Q;
-    P_temp = P_last[index] + Q;
-    
-    //calculate the Kalman gain
-    //K = P_temp * (1.0/(P_temp + R));
-    K[index] = P_temp * (1.0/(P_temp + R));
+    //x_temp_est = x_est_last[index];
+    float P_temp = kalman_vars.P_last[index] + kalman_vars.Q[index];
+    kalman_vars.K = P_temp * (1.0/(P_temp + kalman_vars.R));
     
     //correction
-    //x_est = x_temp_est + K * (z_measured - x_temp_est); 
-    //P = (1- K) * P_temp;
-    x_est = x_temp_est + K[index] * (z_measured - x_temp_est); 
-    P = (1- K[index]) * P_temp;
-    //we have our new system
+    float x_est = x_temp_est + kalman_vars.K * (z_measured - x_temp_est); 
+    float P = (1- kalman_vars.K) * P_temp;
         
     //update our last's
     //P_last = P;
-    //x_est_last = x_est; // no longer needed
-    P_last[index] = P;
+    //x_est_last = x_est;
+    kalman_vars.P_last[index] = P;
     
-    return x_est;
+    return (int16_t)(x_est*SCALAR);
 }

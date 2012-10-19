@@ -9,6 +9,7 @@
 #include "at86rf231.h"
 #include "openrandom.h"
 #include "kalman.h"
+#include "adaptivekalman.h"
 #include "variance.h"
 #include "ses.h"
 
@@ -130,12 +131,21 @@ inline void record(){
     //st1[nf_vars.current] = nf_vars.rssi[nf_vars.current];
   }
   else{
-    /* kalman filter */
-    nf_vars.rssi[nf_vars.current] = kalman(raw,nf_vars.rssi[nf_vars.current],nf_vars.current); 
-    
-    /* Simple Exponential Smoothing 
-    nf_vars.rssi[nf_vars.current] = brown_ses(0.5, raw, nf_vars.rssi[nf_vars.current], nf_vars.current);
-    */
+    switch(idmanager_getMyID(ADDR_16B)->addr_16b[1]){
+    case DEBUG_MOTEID_3:
+      /* static kalman filter */
+      nf_vars.rssi[nf_vars.current] = kalman(raw,nf_vars.rssi[nf_vars.current],nf_vars.current); 
+      break;
+    case DEBUG_MOTEID_4:  
+      nf_vars.rssi[nf_vars.current] = adaptiveKalman(raw,nf_vars.rssi[nf_vars.current],nf_vars.current); 
+      break;
+    case DEBUG_MOTEID_5:  
+      /* Simple Exponential Smoothing */
+      nf_vars.rssi[nf_vars.current] = brown_ses(0.5, raw, nf_vars.rssi[nf_vars.current], nf_vars.current);
+      break;    
+    default:
+      break;
+    }
   }
 }
 

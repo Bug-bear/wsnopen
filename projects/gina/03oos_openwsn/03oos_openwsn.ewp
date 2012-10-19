@@ -2080,10 +2080,16 @@
         <name>$PROJ_DIR$\..\..\..\openwsn\02b-MAChigh\adaptiveKalman.c</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\..\..\openwsn\02b-MAChigh\adaptiveKalman.h</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\..\..\openwsn\02b-MAChigh\bit2bool.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\..\openwsn\02b-MAChigh\bit2bool.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\openwsn\02b-MAChigh\kalman.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\..\openwsn\02b-MAChigh\kalman.h</name>
