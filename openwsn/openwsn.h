@@ -34,7 +34,7 @@ static const uint8_t infoStackName[] = "OpenWSN ";
 #define DEBUG_MOTEID_7      0x07
 #define DEBUG_MOTEID_8      0x08
 #define DEBUG_MOTEID_9      0x09
-#define DEBUG_MOTEID_10     0x10
+#define DEBUG_MOTEID_10     0x0a
 
 
 #ifndef TRUE

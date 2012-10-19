@@ -68,6 +68,11 @@ void list_init(uint8_t NODE_ID) {
         node[3]();
         break;    
    }*/
+   
+   /* The ID passed here is the one burnt in the microprocessor
+      NOT the enums defined in openwsn.h
+      - i.e. to call list_init(10) the address of the chip must be 0x0f
+   */
    node[NODE_ID-1]();
    
    //build invariant slots again (ADV, SER, NF, DIO)

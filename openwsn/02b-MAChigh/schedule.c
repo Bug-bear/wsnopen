@@ -47,6 +47,10 @@ void schedule_init() {
    schedule_setFrameLength(11); //why must this be odd number?
    
    // construct schedule in separate module 
+   /* The ID passed here is the one burnt in the microprocessor
+      NOT the enums defined in openwsn.h
+      - i.e. to call list_init(10) the address of the chip must be 0x0f
+   */
    list_init(idmanager_getMyID(ADDR_16B)->addr_16b[1]); 
 }
 
