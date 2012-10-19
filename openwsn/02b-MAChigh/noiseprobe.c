@@ -81,15 +81,6 @@ inline void nf_endOfED(PORT_TIMER_WIDTH capturedTime){
       radio_rfOff(); //shut the RF as soon as we probed NF
       record();
       
-      /* adapt Q for Kalman Filter 
-      if(nf_vars.hourMark==HOURLYRUN)
-      {
-          adjustQall();
-          nf_vars.hourMark=0;
-          temp++;
-      }
-      */
-      
       /* MAXACTIVESLOTS*16/2 slots per full sweep  (64 runs currently) */
       //if(nf_vars.runs%256==0) //mask updated per 128 superframes, for debugging
       //if(nf_vars.runs==512) //per 256 superframes, approx. 30 secs
@@ -137,6 +128,12 @@ inline void record(){
       nf_vars.rssi[nf_vars.current] = kalman(raw,nf_vars.rssi[nf_vars.current],nf_vars.current); 
       break;
     case DEBUG_MOTEID_4:  
+      /* adapt Q for Kalman Filter */
+      if(nf_vars.hourMark==HOURLYRUN){
+          adjustQall();
+          nf_vars.hourMark=0;
+          temp++;
+      }
       nf_vars.rssi[nf_vars.current] = adaptiveKalman(raw,nf_vars.rssi[nf_vars.current],nf_vars.current); 
       break;
     case DEBUG_MOTEID_5:  
@@ -144,6 +141,8 @@ inline void record(){
       nf_vars.rssi[nf_vars.current] = brown_ses(0.5, raw, nf_vars.rssi[nf_vars.current], nf_vars.current);
       break;    
     default:
+      /* Simple Exponential Smoothing */
+      nf_vars.rssi[nf_vars.current] = brown_ses(0.5, raw, nf_vars.rssi[nf_vars.current], nf_vars.current);
       break;
     }
   }
