@@ -1766,9 +1766,17 @@ port_INLINE uint8_t calculateFrequency(uint8_t channelOffset) {
     ctr = 0xbb;
     ret = SYNCHRONIZING_CHANNEL;  
   } 
-  else
+  
+  else if((idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_2)
+      || (idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_6))
   {
     ctr = 0xcc;
+    ret =  11+(ieee154e_vars.asnOffset+channelOffset)%16; //channel hopping
+  }  
+  
+  else
+  {
+    ctr = 0xdd;
     //ret =  11+(ieee154e_vars.asnOffset+channelOffset)%16; //channel hopping
   
      uint8_t temp_channel = 11+(ieee154e_vars.asnOffset+channelOffset)%16;
