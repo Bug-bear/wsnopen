@@ -1760,15 +1760,15 @@ different channel offsets in the same slot.
 port_INLINE uint8_t calculateFrequency(uint8_t channelOffset) {
   uint8_t ret;
   /* poiiop */
-  if(((idmanager_getIsDAGroot()) && (ieee154e_vars.otherEnd.addr_64b[7] == DEBUG_MOTEID_2))
-    ||((ieee154e_vars.otherEnd.addr_64b[7] == DEBUG_MOTEID_MASTER)))
+  if( (idmanager_getIsDAGroot())   
+      || ((ieee154e_vars.otherEnd.addr_64b[7] == DEBUG_MOTEID_MASTER)))
   { 
     ctr = 0xbb;
     ret = SYNCHRONIZING_CHANNEL;  
   } 
   else
   {
-    //ctr = 0xcc;
+    ctr = 0xcc;
     //ret =  11+(ieee154e_vars.asnOffset+channelOffset)%16; //channel hopping
   
      /* piggy314: check blacklist and generate new channel if neccessary */
