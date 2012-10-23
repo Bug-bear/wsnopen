@@ -1775,15 +1775,15 @@ port_INLINE uint8_t calculateFrequency(uint8_t channelOffset) {
   else
   {
     ctr = 0xdd;
-    /* piggy314: check blacklist and generate new channel if neccessary */
     uint8_t temp_channel = 11+(ieee154e_vars.asnOffset+channelOffset)%16;
+    ret = temp_channel;
     
-     if((schedule_getType()!=CELLTYPE_NF)&&(schedule_getType()!=CELLTYPE_ADV)
-            //&&(schedule_getType()!=CELLTYPE_REPORTORTX
-        )
+    /* piggy314: check blacklist and generate new channel if neccessary */
+     if((schedule_getType()!=CELLTYPE_NF) && (schedule_getType()!=CELLTYPE_ADV))
      {   
-        if(!ieee154e_vars.linkArray[temp_channel-11]) 
-            ret=nextAvail(temp_channel-11);
+        if(!ieee154e_vars.linkArray[temp_channel-11]){
+            ret = nextAvail(temp_channel-11);
+        }
      }
   }
   
