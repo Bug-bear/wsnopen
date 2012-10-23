@@ -1766,25 +1766,23 @@ port_INLINE uint8_t calculateFrequency(uint8_t channelOffset) {
     ctr = 0xbb;
     ret = SYNCHRONIZING_CHANNEL;  
   } 
-  else if((idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_2)
-      || (idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_6))
-  {
-    ctr = 0xcc;
-    ret =  11+(ieee154e_vars.asnOffset+channelOffset)%16; //channel hopping
-  }
   else
   {
-    ctr = 0xdd;
-    uint8_t temp_channel = 11+(ieee154e_vars.asnOffset+channelOffset)%16;
-    ret = temp_channel;
+    ctr = 0xcc;
+    //ret =  11+(ieee154e_vars.asnOffset+channelOffset)%16; //channel hopping
+  
+     /* piggy314: check blacklist and generate new channel if neccessary */
+     uint8_t temp_channel = 11+(ieee154e_vars.asnOffset+channelOffset)%16;
     
-    /* piggy314: check blacklist and generate new channel if neccessary */
-     if((schedule_getType()!=CELLTYPE_NF) && (schedule_getType()!=CELLTYPE_ADV))
+     if((schedule_getType()!=CELLTYPE_NF)&&(schedule_getType()!=CELLTYPE_ADV)
+            //&&(schedule_getType()!=CELLTYPE_REPORTORTX
+            //&&(idmanager_getMyID(ADDR_16B)->addr_16b[1] != DEBUG_MOTEID_2)
+       )
      {   
-        if(!ieee154e_vars.linkArray[temp_channel-11]){
-            ret = nextAvail(temp_channel-11);
-        }
+        if(!ieee154e_vars.linkArray[temp_channel-11]) 
+            temp_channel=nextAvail(temp_channel-11);
      }
+     ret = temp_channel;
   }
   
    return ret;
