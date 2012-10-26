@@ -588,10 +588,14 @@ port_INLINE void activity_synchronize_endOfFrame(PORT_TIMER_WIDTH capturedTime) 
          
          /* Only then start sending (piggy304) */
          if((!idmanager_getIsDAGroot())&&(syn1st==0)){ 
-           //if(idmanager_getMyID(ADDR_16B)->addr_16b[1] != DEBUG_MOTEID_2){ //poiiop: making 02 a pure forwarder
+           if(idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_6
+              || idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_7
+              || idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_8
+              || idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_9
+            ){ //poiiop: making 1st tier pure forwarders
              bbk_init(); 
              syn1st++;
-           //}
+           }
          }
 
          // log the "error"
@@ -1767,8 +1771,8 @@ port_INLINE uint8_t calculateFrequency(uint8_t channelOffset) {
     ret = SYNCHRONIZING_CHANNEL;  
   } 
   
-  else if((idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_2)
-      || (idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_6))
+  else if((idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_5)
+      || (idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_9))
   {
     ctr = 0xcc;
     ret =  11+(ieee154e_vars.asnOffset+channelOffset)%16; //channel hopping
