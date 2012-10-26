@@ -123,27 +123,26 @@ inline void record(){
   }
   else{
     switch(idmanager_getMyID(ADDR_16B)->addr_16b[1]){
-    case DEBUG_MOTEID_3:
-      /* static kalman filter */
-      nf_vars.rssi[nf_vars.current] = kalman(raw,nf_vars.rssi[nf_vars.current],nf_vars.current); 
-      break;
-    case DEBUG_MOTEID_4:  
-      /* adapt Q for Kalman Filter */
-      if(nf_vars.hourMark==HOURLYRUN){
-          adjustQall();
-          nf_vars.hourMark=0;
-          temp++;
-      }
-      nf_vars.rssi[nf_vars.current] = adaptiveKalman(raw,nf_vars.rssi[nf_vars.current],nf_vars.current); 
-      break;
-    case DEBUG_MOTEID_5:  
-      /* Simple Exponential Smoothing */
-      nf_vars.rssi[nf_vars.current] = brown_ses(0.5, raw, nf_vars.rssi[nf_vars.current], nf_vars.current);
-      break;    
-    default:
-      /* Simple Exponential Smoothing */
-      nf_vars.rssi[nf_vars.current] = brown_ses(0.5, raw, nf_vars.rssi[nf_vars.current], nf_vars.current);
-      break;
+      case DEBUG_MOTEID_3:
+        /* static kalman filter */
+        nf_vars.rssi[nf_vars.current] = kalman(raw,nf_vars.rssi[nf_vars.current],nf_vars.current); 
+        break;
+      case DEBUG_MOTEID_4:  
+        /* adapt Q for Kalman Filter */
+        if(nf_vars.hourMark==HOURLYRUN){
+            adjustQall();
+            nf_vars.hourMark=0;
+            temp++;
+        }
+        nf_vars.rssi[nf_vars.current] = adaptiveKalman(raw,nf_vars.rssi[nf_vars.current],nf_vars.current); 
+        break;
+      case DEBUG_MOTEID_2:  
+        /* Simple Exponential Smoothing */
+        nf_vars.rssi[nf_vars.current] = brown_ses(0.1, raw, nf_vars.rssi[nf_vars.current], nf_vars.current);
+        break;    
+      default:
+        nf_vars.rssi[nf_vars.current] = raw;
+        break;
     }
   }
 }
