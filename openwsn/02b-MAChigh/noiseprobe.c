@@ -33,7 +33,7 @@ typedef struct {
    uint16_t        masked;    //blacklisting result to be reported
    uint8_t         rank[16];  //ranking based on noise floors
    /*for integer KF*/
-   int32_t        total;     //sum of samples
+   int32_t         total;     //sum of samples
    int16_t         rssi[16];  //record of noise floors of all channels
    /*for float KF version
    float total;              

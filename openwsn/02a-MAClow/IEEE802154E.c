@@ -588,11 +588,15 @@ port_INLINE void activity_synchronize_endOfFrame(PORT_TIMER_WIDTH capturedTime) 
          
          /* Only then start sending (piggy304) */
          if((!idmanager_getIsDAGroot())&&(syn1st==0)){ 
+            /* bbk_init(); 
+             syn1st++;     
+           */      
+           
            if(idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_6
               || idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_7
               || idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_8
               || idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_9
-            ){ //poiiop: making 1st tier pure forwarders
+           ){ //poiiop: making 1st tier pure forwarders
              bbk_init(); 
              syn1st++;
            }
