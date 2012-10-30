@@ -17,11 +17,11 @@ typedef struct {
     uint8_t       parent;
     uint8_t	  asn[5];   //either side
     uint8_t       channel;  //either side
-    uint8_t       retry;
+    uint8_t       retry; 
     uint8_t       seq[4];   //Tx
     mask_t	  Smask;
-    mask_t	  Rmask;
-  uint8_t       end;
+    mask_t	  Rmask;  
+  uint8_t       end;  // now temporarily used for adaptive_Q indicator
 } demo_t;
 //=========================== variables =======================================
 

@@ -131,6 +131,7 @@ inline void record(){
         /* adapt Q for Kalman Filter */
         if(nf_vars.hourMark==HOURLYRUN){
             adjustQall();
+            countQ(); //update record in mac
             nf_vars.hourMark=0;
             temp++;
         }
@@ -147,11 +148,8 @@ inline void record(){
   }
 }
 
-//basic bubble sort
+//basic bubble sort - to be replaced by cocktail
 inline void sort(){ 
-//inline void sort(float sortee[]){ 
-//inline void sort(uint8_t sortee[]){ 
-    //float sortee[16];
     int16_t sortee[16];
     memcpy(sortee,nf_vars.rssi,sizeof(sortee));
     for(int8_t i=1; i< 16; i++)
@@ -175,7 +173,6 @@ inline void sort(){
 
 void electFixed(){ 
   sort(); //piggy28 (enabled for fix-sized blacklist)
-  
   nf_vars.masked=0;
   /* fix-sized */
   for(int8_t i=0; i<nf_vars.bl_size; i++){
@@ -186,7 +183,7 @@ void electFixed(){
 /* threshold-based */
 void electThreshold(){ 
   nf_vars.masked=0;
-  for(int8_t i=0; i<16; i++){
+  for(int8_t i=0; i<15; i++){ //leave out chan 26 since it's always valid
       if( nf_vars.rssi[i] > (BLTHRESHOLD-ED_OFFSET)*SCALAR){
         nf_vars.masked+=1<<i;
       }
@@ -198,12 +195,8 @@ void electThreshold(){
 inline void notifyMe(){ //need to be called every NF slot for timing
   // root: simply report mask to be inserted in Adv
   // motes: generate RES packets to be pushed into queue
-  
-  //if(idmanager_getIsDAGroot()) //(comment to enable blacklisting in senders)
-  { 
-      activity_np3(nf_vars.masked);
-      //activity_np3(~((uint16_t)(nf_vars.rssi[nf_vars.current]))); //debug
-  }
+  activity_np3(nf_vars.masked);
+  //activity_np3(~((uint16_t)(nf_vars.rssi[nf_vars.current]))); //debug
 }
 
 /*piggy16: tell others*/

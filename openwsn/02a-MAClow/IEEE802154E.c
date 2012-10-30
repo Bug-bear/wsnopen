@@ -87,7 +87,8 @@ uint8_t syn1st=0;
 uint16_t local_t_mask = 0xFFFF;
 uint16_t local_TxMask = 0xFFFF;
 uint16_t local_RxMask = 0xFFFF;
-uint8_t ctr = 0;
+uint8_t  ctrl = 0;
+uint8_t  Qctr = 0;
 //=========================== prototypes ======================================
 
 // SYNCHRONIZING
@@ -1771,20 +1772,20 @@ port_INLINE uint8_t calculateFrequency(uint8_t channelOffset) {
   if( (idmanager_getIsDAGroot())   
       || ((ieee154e_vars.otherEnd.addr_64b[7] == DEBUG_MOTEID_MASTER)))
   { 
-    ctr = 0xbb;
+    ctrl = 0xbb;
     ret = SYNCHRONIZING_CHANNEL;  
   } 
   
   else if((idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_5)
       || (idmanager_getMyID(ADDR_16B)->addr_16b[1] == DEBUG_MOTEID_9))
   {
-    ctr = 0xcc;
+    ctrl = 0xcc;
     ret =  11+(ieee154e_vars.asnOffset+channelOffset)%16; //channel hopping
   }  
   
   else
   {
-    ctr = 0xdd;
+    ctrl = 0xdd;
     //ret =  11+(ieee154e_vars.asnOffset+channelOffset)%16; //channel hopping
   
      uint8_t temp_channel = 11+(ieee154e_vars.asnOffset+channelOffset)%16;
@@ -2014,6 +2015,7 @@ void handleRecvPkt(OpenQueueEntry_t* pkt){
         
         ((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->Rmask.pos[0] = (uint8_t)((ieee154e_vars.linkMask & 0xff00)>>8);
         ((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->Rmask.pos[1] = (uint8_t)((ieee154e_vars.linkMask & 0x00ff)>>0);
+        ((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->end = Qctr; //how many times Q is adjusted
       }
       
       /* Mask-relate dubug 
@@ -2044,7 +2046,7 @@ void insertOutgoing(OpenQueueEntry_t* pkt){
       memcpy(&(((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->asn[3]),(uint8_t*)(&(ieee154e_vars.asn.bytes0and1)),sizeof(uint16_t));
       
       ((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->channel = ieee154e_vars.freq;
-      ((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->retry = ctr;
+      ((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->retry = ctrl;
       
       //((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->sent.pos[0] = (uint8_t)((parentM & 0xff00)>>8);
       //((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->sent.pos[1] = (uint8_t)((parentM & 0x00ff)>>0);
@@ -2068,4 +2070,8 @@ void insertOutgoing(OpenQueueEntry_t* pkt){
       }
       break;
   }
+}
+
+void countQ(){
+  Qctr++;
 }

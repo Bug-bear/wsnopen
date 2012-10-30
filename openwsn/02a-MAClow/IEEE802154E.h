@@ -156,5 +156,5 @@ void     handleRecvPkt(OpenQueueEntry_t*);
 /* piggy203: payload manip */
 void     insertOutgoing(OpenQueueEntry_t*);
 void     handleRecvPkt(OpenQueueEntry_t*);
-
+void     countQ();
 #endif
