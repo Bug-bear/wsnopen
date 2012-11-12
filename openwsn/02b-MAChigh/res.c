@@ -39,13 +39,20 @@ void    res_timer_cb();
 
 void res_init() {
    res_vars.periodMaintenance = 1700+(openrandom_get16b()&0xff); // fires every 1 sec on average
-   //res_vars.periodMaintenance = 850+(openrandom_get16b()&0xff);
+   uint16_t longer = res_vars.periodMaintenance * 2;
    res_vars.busySending       = FALSE;
    res_vars.dsn               = 0;
    res_vars.MacMgtTaskCounter = 0;
-   res_vars.timerId = opentimers_start(res_vars.periodMaintenance,
+   if(idmanager_getIsDAGroot()){
+      res_vars.timerId = opentimers_start(longer,
+                                       TIMER_PERIODIC,TIME_MS,
+                                       res_timer_cb);   
+   }
+   else{
+      res_vars.timerId = opentimers_start(res_vars.periodMaintenance,
                                        TIMER_PERIODIC,TIME_MS,
                                        res_timer_cb);
+   }
 }
 
 bool debugPrint_myDAGrank() {
