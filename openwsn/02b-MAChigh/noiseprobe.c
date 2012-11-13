@@ -88,8 +88,8 @@ inline void nf_endOfED(PORT_TIMER_WIDTH capturedTime){
       if(nf_vars.runs == nf_vars.updatePeriod*5) // 5 mins
       {
         reset_vars();
-        //electFixed();
-        electThreshold();
+        electFixed();
+        //electThreshold();
         
         //notifyOther();
         //sift(); //debug
@@ -149,35 +149,51 @@ inline void record(){
   }
 }
 
-//basic bubble sort - to be replaced by cocktail
+// cocktail sort to descending order of rssi
 inline void sort(){ 
     int16_t sortee[16];
     memcpy(sortee,nf_vars.rssi,sizeof(sortee));
-    for(int8_t i=1; i< 16; i++)
-    {
-      for(int8_t j=0; j<16-i; j++)
-      {
-          if(sortee[j]<sortee[j+1])
-          {
-            //float temp1 = sortee[j+1];
-            int16_t temp1 = sortee[j+1];
-            
-            sortee[j+1] = sortee[j];
-            sortee[j] = temp1;
-            int8_t temp2 = nf_vars.rank[j+1];
-            nf_vars.rank[j+1]=nf_vars.rank[j]; 
-            nf_vars.rank[j] = temp2;
-          }
+    bool swapped = FALSE;
+    int8_t begin = -1;
+    int8_t end = 16-2;
+    
+    do{
+      begin = begin + 1;
+      for(int8_t i=begin; i<end; i++){
+        if(sortee[i]<sortee[i+1]){
+          int16_t temp1 = sortee[i+1];
+          sortee[i+1] = sortee[i];
+          sortee[i] = temp1;
+          int8_t temp2 = nf_vars.rank[i+1];
+          nf_vars.rank[i+1]=nf_vars.rank[i]; 
+          nf_vars.rank[i] = temp2;
+          swapped = TRUE;
+        }
       }
-    }
+      if(!swapped) break;
+      end = end - 1;
+      for(int i = end; i>=begin; i--){
+        if(sortee[i]<sortee[i+1]){
+          int16_t temp1 = sortee[i+1];
+          sortee[i+1] = sortee[i];
+          sortee[i] = temp1;
+          int8_t temp2 = nf_vars.rank[i+1];
+          nf_vars.rank[i+1]=nf_vars.rank[i]; 
+          nf_vars.rank[i] = temp2;     
+          swapped = TRUE;
+        }
+      }
+    } while(swapped);
 }   
 
+/* fix-sized */
 void electFixed(){ 
   sort(); //piggy28 (enabled for fix-sized blacklist)
   nf_vars.masked=0;
-  /* fix-sized */
   for(int8_t i=0; i<nf_vars.bl_size; i++){
-      nf_vars.masked+=1<<nf_vars.rank[i];
+    if(nf_vars.rank[i] != 15){ //leave SYNC channel intact
+      nf_vars.masked += 1<<nf_vars.rank[i];
+    }
   }
 }
 
