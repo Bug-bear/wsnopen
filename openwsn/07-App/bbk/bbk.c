@@ -16,7 +16,7 @@
 
 /// inter-packet period (in ms)
 //#define BBKPERIOD    1000
-#define BBKPERIOD    1500 // 0.5 Hz
+#define BBKPERIOD    2000 // 0.5 Hz
 #define SAMPLE  300
 //#define SAMPLE  1000
 
