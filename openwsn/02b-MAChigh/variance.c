@@ -15,22 +15,24 @@ uint8_t num[] ={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; //number of readings taken
 void updateVar(float rssi, uint8_t channel){ //online algorithm
   float fvar = ((float)var[channel])/100;
   num[channel]++;
-  float delta=rssi-mean[channel];
-  mean[channel]=mean[channel]+delta/num[channel];
+  float delta = rssi-mean[channel];
+  mean[channel] = mean[channel]+delta/num[channel];
   //M2[channel] = M2[channel] + delta*(rssi-mean[channel]);
   //var[channel]=M2[channel]/num[channel];
   M2 = fvar*(num[channel]-1) + delta*(rssi-mean[channel]); //causing problem,why?
-  var[channel]=(uint16_t)(M2*100/num[channel]);
+  var[channel] = (uint16_t)(M2*100/num[channel]);
 }
 
 float getVarRatio(uint8_t channel){
   float ret;
   if(last_var[channel]==0){
-      last_var[channel]=var[channel];
+      last_var[channel] = var[channel];
       return 1;
   }
   ret = (float)var[channel]/last_var[channel];
+  //for next phase
   last_var[channel]=var[channel];
-  //var[channel]=0; //reset for next phase
+  var[channel]=0; 
+  num[channel]=0;
   return ret;
 }

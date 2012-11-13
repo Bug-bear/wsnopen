@@ -2018,7 +2018,7 @@ void handleRecvPkt(OpenQueueEntry_t* pkt){
         
         ((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->Rmask.pos[0] = (uint8_t)((ieee154e_vars.linkMask & 0xff00)>>8);
         ((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->Rmask.pos[1] = (uint8_t)((ieee154e_vars.linkMask & 0x00ff)>>0);
-        ((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->end = Qctr; //how many times Q is adjusted
+        ((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->retry = Qctr; //how many times Q is adjusted
       }
       
       /* Mask-relate dubug 
@@ -2049,7 +2049,7 @@ void insertOutgoing(OpenQueueEntry_t* pkt){
       memcpy(&(((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->asn[3]),(uint8_t*)(&(ieee154e_vars.asn.bytes0and1)),sizeof(uint16_t));
       
       ((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->channel = ieee154e_vars.freq;
-      ((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->retry = ctrl;
+      ((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->end = ctrl;
       
       //((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->sent.pos[0] = (uint8_t)((parentM & 0xff00)>>8);
       //((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->sent.pos[1] = (uint8_t)((parentM & 0x00ff)>>0);
