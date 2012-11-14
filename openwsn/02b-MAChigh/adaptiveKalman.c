@@ -51,16 +51,16 @@ void adaptiveKalman_init() {
 int16_t adaptiveKalman(int16_t raw, int16_t last, uint8_t index){
     
     //measure
-    int16_t z_measured = raw;
+    float z_measured = (float)raw/SCALAR;
     
     //update record of channel variance
-    updateVar((float)raw/SCALAR, index); 
+    updateVar(z_measured, index); 
     
     //initialize with a measurement
-    int16_t x_est_last = last;
+    float x_est_last = (float)last/SCALAR;
     
     //do a prediction
-    int16_t x_temp_est = x_est_last;
+    float x_temp_est = x_est_last;
     //P_temp = P_last + Q;
     //x_temp_est = x_est_last[index];
     float P_temp = adaptiveKalman_vars.P_last[index] + adaptiveKalman_vars.Q[index];
@@ -75,7 +75,7 @@ int16_t adaptiveKalman(int16_t raw, int16_t last, uint8_t index){
     //x_est_last = x_est;
     adaptiveKalman_vars.P_last[index] = P;
     
-    return (int16_t)(x_est);
+    return (int16_t)(x_est*SCALAR);
 }
 
 

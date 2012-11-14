@@ -12,8 +12,8 @@
 
 /* Brown's Simple Exponential Smoothing (exponentially weighted moving average) */
 int16_t brown_ses(float alpha, int16_t raw, int16_t last, uint8_t index){
-  float ret = alpha*((float)raw)+(1-alpha)*((float)last);
-  return (int16_t)(ret);
+  float ret = alpha*((float)raw/SCALAR)+(1-alpha)*((float)last/SCALAR);
+  return (int16_t)(ret*SCALAR);
 }
 
 /* Brown's Linear (i.e., double) Exponential Smoothing */
