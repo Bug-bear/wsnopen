@@ -2016,7 +2016,7 @@ void insertOutgoing(OpenQueueEntry_t* pkt){
     case IEEE154_TYPE_DATA:
       if((pkt->creator==COMPONENT_BBK))
       {       
-      ((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->channel = ieee154e_vars.freq;
+      ((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->channel = ieee154e_vars.freq;
       
       //((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->sent.pos[0] = (uint8_t)((parentM & 0xff00)>>8);
       //((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->sent.pos[1] = (uint8_t)((parentM & 0x00ff)>>0);
