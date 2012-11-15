@@ -16,8 +16,6 @@ typedef struct {
 kalman_vars_t kalman_vars;
 
 void kalman_init() {
-   uint8_t     i;
-
    // reset local variables
    memset(&kalman_vars,0,sizeof(kalman_vars_t));
 
@@ -46,13 +44,13 @@ void kalman_init() {
   
 int16_t kalman(int16_t raw, int16_t last, uint8_t index){    
     //measure
-    float z_measured = (float)raw/SCALAR;
+    int16_t z_measured = raw;
     
     //initialize with a measurement
-    float x_est_last = (float)last/SCALAR;
+    int16_t x_est_last = last;
     
     //do a prediction
-    float x_temp_est = x_est_last;
+    int16_t x_temp_est = x_est_last;
     //P_temp = P_last + Q;
     //x_temp_est = x_est_last[index];
     float P_temp = kalman_vars.P_last[index] + kalman_vars.Q[index];
@@ -67,5 +65,5 @@ int16_t kalman(int16_t raw, int16_t last, uint8_t index){
     //x_est_last = x_est;
     kalman_vars.P_last[index] = P;
     
-    return (int16_t)(x_est*SCALAR);
+    return (int16_t)(x_est);
 }
