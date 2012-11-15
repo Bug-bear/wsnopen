@@ -123,13 +123,19 @@ inline void record(){
   }
   else{
     switch(idmanager_getMyID(ADDR_16B)->addr_16b[1]){
-      case DEBUG_MOTEID_5: //9 
+      case DEBUG_MOTEID_3: //7
+        /* Simple Exponential Smoothing */
+        nf_vars.rssi[nf_vars.current] = brown_ses(0.1, raw, nf_vars.rssi[nf_vars.current], nf_vars.current);
+        break;
+        
+      case DEBUG_MOTEID_4: //8
         /* static kalman filter */
         nf_vars.rssi[nf_vars.current] = kalman(raw,nf_vars.rssi[nf_vars.current],nf_vars.current); 
         break;
-      case DEBUG_MOTEID_2: //6  
+        
+      case DEBUG_MOTEID_5: //9 
         /* adapt Q for Kalman Filter */
-        if(nf_vars.hourMark==HOURLYRUN){
+        if(nf_vars.hourMark == HOURLYRUN/6){ // 10 mins
             adjustQall();
             countQ(); //update record in mac
             nf_vars.hourMark=0;
@@ -137,11 +143,8 @@ inline void record(){
         }
         nf_vars.rssi[nf_vars.current] = adaptiveKalman(raw,nf_vars.rssi[nf_vars.current],nf_vars.current); 
         break;
-      case DEBUG_MOTEID_4: //8
-        /* Simple Exponential Smoothing */
-        nf_vars.rssi[nf_vars.current] = brown_ses(0.1, raw, nf_vars.rssi[nf_vars.current], nf_vars.current);
-        break; 
-      case DEBUG_MOTEID_3: //7
+ 
+      case DEBUG_MOTEID_2: //6  
       default:
         nf_vars.rssi[nf_vars.current] = raw;
         break;
