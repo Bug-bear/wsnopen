@@ -125,17 +125,17 @@ inline void record(){
       /* static kalman filter 
       nf_vars.rssi[nf_vars.current] = kalman(raw,nf_vars.rssi[nf_vars.current],nf_vars.current); */
       
-      /* adapt Q for Kalman Filter */
+      /* adapt Q for Kalman Filter 
       if(nf_vars.hourMark == HOURLYRUN) //update Q every hour
       {
           adjustQall();
           nf_vars.hourMark=0;
           temp++;
       }
-      nf_vars.rssi[nf_vars.current] = adaptiveKalman(raw,nf_vars.rssi[nf_vars.current],nf_vars.current); 
+      nf_vars.rssi[nf_vars.current] = adaptiveKalman(raw,nf_vars.rssi[nf_vars.current],nf_vars.current); */
       
-      /* Simple Exponential Smoothing 
-      nf_vars.rssi[nf_vars.current] = brown_ses(0.5, raw, nf_vars.rssi[nf_vars.current], nf_vars.current);*/
+      /* Simple Exponential Smoothing */
+      nf_vars.rssi[nf_vars.current] = brown_ses(0.1, raw, nf_vars.rssi[nf_vars.current], nf_vars.current);
   }
 }
 
