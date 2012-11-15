@@ -85,11 +85,11 @@ inline void nf_endOfED(PORT_TIMER_WIDTH capturedTime){
       //if(nf_vars.runs%256==0) //mask updated per 128 superframes, for debugging
       //if(nf_vars.runs==512) //per 256 superframes, approx. 30 secs
       //if(nf_vars.runs==1024)
-      if(nf_vars.runs == nf_vars.updatePeriod*5) // 5 mins
+      if(nf_vars.runs == nf_vars.updatePeriod*1) // 5 mins
       {
         reset_vars();
-        //electFixed();
-        electThreshold();
+        electFixed();
+        //electThreshold();
         
         //notifyOther();
         //sift(); //debug

@@ -96,41 +96,41 @@ void list_init(uint8_t NODE_ID) {
          &temp_neighbor);
    
    // Noise Floor Probe
-   /* piggy903: only enable blacklisting in non-DAGroot motes */
+   /* piggy903: only enable blacklisting in non-DAGroot motes 
    if(NODE_ID==DEBUG_MOTEID_MASTER){
-   i = 6; 
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   schedule_addActiveSlot(i,
-         CELLTYPE_SERIALRX,
-         FALSE,
-         0,
-         &temp_neighbor);
-   
-   i = 7; 
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   schedule_addActiveSlot(i,
-         CELLTYPE_MORESERIALRX,
-         FALSE,
-         0,
-         &temp_neighbor);
+     i = 6; 
+     memset(&temp_neighbor,0,sizeof(temp_neighbor));
+     schedule_addActiveSlot(i,
+           CELLTYPE_SERIALRX,
+           FALSE,
+           0,
+           &temp_neighbor);
+     
+     i = 7; 
+     memset(&temp_neighbor,0,sizeof(temp_neighbor));
+     schedule_addActiveSlot(i,
+           CELLTYPE_MORESERIALRX,
+           FALSE,
+           0,
+           &temp_neighbor);
    }
-   else 
+   else */
    {
-   i = 6; 
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   schedule_addActiveSlot(i,
-         CELLTYPE_NF,
-         FALSE,
-         0,
-         &temp_neighbor);
-   
-   i = 7; 
-   memset(&temp_neighbor,0,sizeof(temp_neighbor));
-   schedule_addActiveSlot(i,
-         CELLTYPE_NF,
-         FALSE,
-         0,
-         &temp_neighbor);
+     i = 6; 
+     memset(&temp_neighbor,0,sizeof(temp_neighbor));
+     schedule_addActiveSlot(i,
+           CELLTYPE_NF,
+           FALSE,
+           0,
+           &temp_neighbor);
+     
+     i = 7; 
+     memset(&temp_neighbor,0,sizeof(temp_neighbor));
+     schedule_addActiveSlot(i,
+           CELLTYPE_NF,
+           FALSE,
+           0,
+           &temp_neighbor);
    }
    
    //for RPL DIOs?
