@@ -15,7 +15,7 @@ enum {
   MASK_SIZE = 6,
   LOG2SAMPLES = 5, //this is the best a slot can cope
   ED_OFFSET = -91,
-  SCALAR = 1
+  SCALAR = 100
 };
 
 //=========================== typedef =========================================

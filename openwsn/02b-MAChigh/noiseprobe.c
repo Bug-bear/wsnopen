@@ -148,6 +148,7 @@ inline void sort(){
     int8_t end = 16-2;
     
     do{
+      swapped = FALSE;
       begin = begin + 1;
       for(int8_t i=begin; i<end; i++){
         if(sortee[i]<sortee[i+1]){
@@ -162,7 +163,7 @@ inline void sort(){
       }
       if(!swapped) break;
       end = end - 1;
-      for(int i = end; i>=begin; i--){
+      for(int8_t i = end; i>=begin; i--){
         if(sortee[i]<sortee[i+1]){
           int16_t temp1 = sortee[i+1];
           sortee[i+1] = sortee[i];
@@ -182,7 +183,7 @@ void electFixed(){
   nf_vars.masked=0;
   for(int8_t i=0; i<nf_vars.bl_size; i++){
     if(nf_vars.rank[i] != 15){ //leave SYNC channel intact
-      nf_vars.masked += 1<<nf_vars.rank[i];
+        nf_vars.masked += 1<<nf_vars.rank[i];
     }
   }
 }

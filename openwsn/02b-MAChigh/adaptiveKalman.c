@@ -17,8 +17,6 @@ typedef struct {
 adaptiveKalman_vars_t adaptiveKalman_vars;
 
 void adaptiveKalman_init() {
-   uint8_t     i;
-
    // reset local variables
    memset(&adaptiveKalman_vars,0,sizeof(adaptiveKalman_vars_t));
 
