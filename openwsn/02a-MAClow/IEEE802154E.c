@@ -1972,8 +1972,8 @@ inline void activity_npe1() {
 inline void activity_np2(){ //ri3
    changeState(S_NPSTART);
    //blacklist sizes for debugging
-   int8_t size = 4; 
-   //int8_t size = 8; 
+   //int8_t size = 4; 
+   int8_t size = 8; 
    //int8_t size = 12; 
    startProbeSlot(ieee154e_vars.freq,size); // 6 is the default bl size
    

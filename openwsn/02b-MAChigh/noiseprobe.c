@@ -158,6 +158,7 @@ inline void sort(){
     int8_t end = 16-2;
     
     do{
+      swapped = FALSE;
       begin = begin + 1;
       for(int8_t i=begin; i<end; i++){
         if(sortee[i]<sortee[i+1]){
@@ -172,7 +173,7 @@ inline void sort(){
       }
       if(!swapped) break;
       end = end - 1;
-      for(int i = end; i>=begin; i--){
+      for(int8_t i = end; i>=begin; i--){
         if(sortee[i]<sortee[i+1]){
           int16_t temp1 = sortee[i+1];
           sortee[i+1] = sortee[i];
