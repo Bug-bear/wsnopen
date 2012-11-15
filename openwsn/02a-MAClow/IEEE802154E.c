@@ -1946,8 +1946,8 @@ inline void activity_npe1() {
 
 inline void activity_np2(){ //ri3
    changeState(S_NPSTART);
-   //size = 6; //blacklist size for debugging
-   startProbeSlot(ieee154e_vars.freq,6); // 6 is the default bl size
+   int8_t size = 6; //blacklist size for debugging
+   startProbeSlot(ieee154e_vars.freq, size); // 6 is the default bl size
    
    //we hereby assume noise probe always finishes in time
    //rie2 not needed because we don't actually want to receive packet at all
