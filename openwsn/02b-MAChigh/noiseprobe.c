@@ -88,8 +88,8 @@ inline void nf_endOfED(PORT_TIMER_WIDTH capturedTime){
       if(nf_vars.runs == nf_vars.updatePeriod*1) // 5 mins
       {
         reset_vars();
-        electFixed();
-        //electThreshold();
+        //electFixed();
+        electThreshold();
         
         //notifyOther();
         //sift(); //debug
