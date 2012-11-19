@@ -17,10 +17,8 @@ typedef struct {
 adaptiveKalman_vars_t adaptiveKalman_vars;
 
 void adaptiveKalman_init() {
-   uint8_t     i;
-
-   // reset local variables
-   memset(&adaptiveKalman_vars,0,sizeof(adaptiveKalman_vars_t));
+    // reset local variables
+    memset(&adaptiveKalman_vars,0,sizeof(adaptiveKalman_vars_t));
 
     //the noise in the system    
     adaptiveKalman_vars.Q[0] = 25.6;
@@ -39,13 +37,11 @@ void adaptiveKalman_init() {
     adaptiveKalman_vars.Q[13] = 10.35;
     adaptiveKalman_vars.Q[14] = 37.54;
     adaptiveKalman_vars.Q[15] = 22.45; 
-    adaptiveKalman_vars.R = 1; //covariance of the observation noise
+    adaptiveKalman_vars.R = 1; // variance of the observation noise
     
-    memset(&adaptiveKalman_vars.P_last, 1,sizeof(adaptiveKalman_vars.P_last));
+    memset(&adaptiveKalman_vars.P_last, 1, sizeof(adaptiveKalman_vars.P_last));
     //adaptiveKalman_vars.P_last[] ={1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
 }
-
-
   
 //float kalman(float raw, float last, uint8_t index){
 int16_t adaptiveKalman(int16_t raw, int16_t last, uint8_t index){

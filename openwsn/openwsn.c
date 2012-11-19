@@ -49,6 +49,7 @@
 #include "schedule.h"
 #include "kalman.h"
 #include "adaptivekalman.h"
+#include "variance.h"
 #include "noiseprobe.h" //noise floor module
 
 //l2a
@@ -87,6 +88,7 @@ void openwsn_init() {
    res_init();
    neighbors_init();
    kalman_init();
+   vary_init();
    adaptiveKalman_init();
    nf_init(); //noise floor module
    // 03a-IPHC
