@@ -18,6 +18,13 @@ enum {
   SCALAR = 100
 };
 
+// Do this for once only to help future mask-related operations
+static const uint16_t maskBits[] 
+  = { (uint16_t)1<<0, (uint16_t)1<<1, (uint16_t)1<<2, (uint16_t)1<<3, 
+      (uint16_t)1<<4, (uint16_t)1<<5, (uint16_t)1<<6, (uint16_t)1<<7, 
+      (uint16_t)1<<8, (uint16_t)1<<9, (uint16_t)1<<10, (uint16_t)1<<11, 
+      (uint16_t)1<<12, (uint16_t)1<<13, (uint16_t)1<<14, (uint16_t)1<<15 };
+
 //=========================== typedef =========================================
 
 //IEEE802.15.4E acknowledgement (ACK)

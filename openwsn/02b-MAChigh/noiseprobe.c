@@ -183,7 +183,8 @@ void electFixed(){
   nf_vars.masked=0;
   for(int8_t i=0; i<nf_vars.bl_size; i++){
     if(nf_vars.rank[i] != 15){ //leave SYNC channel intact
-        nf_vars.masked += 1<<nf_vars.rank[i];
+      //nf_vars.masked += 1<<nf_vars.rank[i];
+      nf_vars.masked += maskBits[nf_vars.rank[i]];
     }
   }
 }
