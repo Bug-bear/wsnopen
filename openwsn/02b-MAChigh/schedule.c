@@ -45,6 +45,7 @@ void schedule_init() {
 
    // set frame length
    schedule_setFrameLength(11); //why must this be odd number?
+   //it has to be mutually prime with number of channels, i.e. 16
    
    // construct schedule in separate module 
    /* The ID passed here is the one burnt in the microprocessor
