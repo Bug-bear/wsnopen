@@ -17,7 +17,8 @@
 #include "openserial.h" //debug
 //=========================== defines =========================================
 //const uint16_t BLPERIOD  =  64; //30 sec (512/8) integral number of sweep
-const uint8_t BLSWEEP  =  32; // 1 sweep = 16 superframes -> 32 runs -> 2.64 sec
+const uint8_t BLSWEEP  =  32; // 1 sweep = 16 superframes -> 32 runs -> 2.64 sec 
+//wrong? 1 sweep = 8 superframes -> 16 runs -> 1.32 sec
 const int8_t BLTHRESHOLD = -88; 
 const int8_t NUL = -123; 
 const uint32_t HOURLYRUN = 21818; // 165ms/frame
