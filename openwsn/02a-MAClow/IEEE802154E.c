@@ -1973,14 +1973,12 @@ void handleRecvPkt(OpenQueueEntry_t* pkt){
   //only alter payload of APP layer pkts
   if((ieee154e_vars.dataReceived->l2_frameType==IEEE154_TYPE_DATA)&&(((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->start==0xED))
   {
-      /*
       memcpy(&(((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->asn[0]),(uint8_t*)(&(ieee154e_vars.asn.byte4)),sizeof(uint8_t));
       memcpy(&(((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->asn[1]),(uint8_t*)(&(ieee154e_vars.asn.bytes2and3)),sizeof(uint16_t));
       memcpy(&(((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->asn[3]),(uint8_t*)(&(ieee154e_vars.asn.bytes0and1)),sizeof(uint16_t));
-      */
-    
-      //((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->rssi = pkt->l1_rssi;
+      ((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->channel = ieee154e_vars.freq;
       
+      //((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->rssi = pkt->l1_rssi;
       
       //((demo_t*)(pkt->payload + pkt->length - sizeof(demo_t)))->recasnOffset = ieee154e_vars.asnOffset;
       
@@ -2013,7 +2011,10 @@ void insertOutgoing(OpenQueueEntry_t* pkt){
     case IEEE154_TYPE_DATA:
       if((pkt->creator==COMPONENT_BBK))
       {       
-      ((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->channel = ieee154e_vars.freq;
+      /*memcpy(&(((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->asn[0]),(uint8_t*)(&(ieee154e_vars.asn.byte4)),sizeof(uint8_t));
+      memcpy(&(((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->asn[1]),(uint8_t*)(&(ieee154e_vars.asn.bytes2and3)),sizeof(uint16_t));
+      memcpy(&(((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->asn[3]),(uint8_t*)(&(ieee154e_vars.asn.bytes0and1)),sizeof(uint16_t));
+      ((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->channel = ieee154e_vars.freq;*/
       
       //((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->sent.pos[0] = (uint8_t)((parentM & 0xff00)>>8);
       //((demo_t*)(pkt->payload + pkt->length -2 - sizeof(demo_t)))->sent.pos[1] = (uint8_t)((parentM & 0x00ff)>>0);

@@ -119,7 +119,7 @@ void bbk_task_cb() {
    
    // send
    //if(bbk_vars.sequence<SAMPLE)
-   if(SAMPLE>0)
+   if(SAMPLE>0) // never stop sending
    {
       bbk_vars.sequence++;
       /*outcome = opencoap_send(pkt,
